@@ -1,12 +1,12 @@
 const express =require("express")
 const router =express.Router()
 const UserController=require("../../controllers/user-controller");
-
+const {AuthRequestValidator}=require("../../middlewares/index")
 
 //user routes
 
-router.post("/signup",UserController.create);
+router.post("/signup",AuthRequestValidator.validateUserAuth,UserController.create);
 router.delete("/users/:id",UserController.destroy)
 router.get("/users/:id",UserController.getById),
-router.post("/signin",UserController.signIn)
+router.post("/signin",AuthRequestValidator.validateUserAuth,UserController.signIn)
 module.exports=router;
