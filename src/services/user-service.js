@@ -42,15 +42,11 @@ class UserService{
     }
   }
   
-  crateToken(user){
+  createToken(user){
     try {
 
-      const result= jwt.sign(user,JWT_KEY,{expiresIn:30})
+      const result= jwt.sign(user,JWT_KEY,{expiresIn:'1h'})
       return result
-
-
-
-      
     } catch (error) {
 
       console.log("something went wrong with token creation")
@@ -60,7 +56,7 @@ class UserService{
 
   }
 
-  verifyToken(token){
+#verifyToken(token){
     try {
       const response =jwt.verify(token,JWT_KEY);
       return response
@@ -70,15 +66,41 @@ class UserService{
       throw error;      
     }
   }
-checkPassword(plainPassword,encryptedPassword){
+
+ #checkPassword(plainPassword,encryptedPassword){
   try {
-       return  bcrypt.compare(plainPassword,encryptedPassword);
+       const result = bcrypt.compareSync(plainPassword,encryptedPassword);
+
+       return result
+
     } catch (error) {
     console.log("something went wrong with password verification",error)
     throw error
     
   }
 
+}
+
+async signIn(email,plainPassword){
+  try {
+    
+  const user= await this.UserRepository.getByEmail(email);
+  const passwordMach= this.#checkPassword(plainPassword,user.password)
+
+  if(!passwordMach){
+    console.log("password does not match")
+    
+    throw error
+  }
+
+  const newJwt=this.createToken({email:user.email,id:user.id})
+  return newJwt;
+    
+  } catch (error) {
+    console.log("something went wrong with the sign in process",error)
+    throw error
+    
+  }
 }
 
 

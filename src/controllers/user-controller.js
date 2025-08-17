@@ -86,9 +86,37 @@ const getById = async (req,res)=>{
 
 }
 
+const signIn =async (req,res)=>{
+    try {
+        const response=await userService.signIn(
+        req.body.email,
+        req.body.password
+        )
+        return  res.status(httpStatusCodes.OK).json({
+            success:true,
+            data:response,
+            message:"Successfully signed in",
+            err:{}
+        })
+
+    } catch (error) {
+         return  res.status(httpStatusCodes.UNAUTHORIZED).json({
+            success:false,
+            data:{},
+            message:"Incorrect email/password ",
+            err:error
+        })
+        
+        
+      
+    }
+}
+
+
 
 module.exports={
     create,
     destroy,
-    getById
+    getById,
+    signIn
 }

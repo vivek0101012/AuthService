@@ -5,7 +5,8 @@ const UserController=require("../../controllers/user-controller");
 
 //user routes
 
-router.post("/users",UserController.create);
+router.post("/signup",UserController.create);
 router.delete("/users/:id",UserController.destroy)
-router.get("/users/:id",UserController.getById)
+router.get("/users/:id",UserController.getById),
+router.post("/signin",UserController.signIn)
 module.exports=router;

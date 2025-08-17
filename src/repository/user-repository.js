@@ -38,6 +38,7 @@ class UserRepository {
             const user= await User.findByPk(userId,{
                 attributes:['email','id']
             })
+            
             return user;
             
         } catch (error) {
@@ -48,6 +49,21 @@ class UserRepository {
 
     }
 
+    async getByEmail(userEmail){
+       try {
+         const user = User.findOne({
+            where:{
+                email:userEmail
+            }
+        })
+        return user
+        
+       } catch (error) {
+        console.log("something went wrong with fetching the user",error)
+        throw error
+        
+       }
+    }
 
 }
 
