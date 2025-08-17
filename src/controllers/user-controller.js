@@ -1,6 +1,6 @@
 const { Model } = require("sequelize")
 const UserService= require("../services/user-service")
-
+const httpStatusCodes=require("http-status-codes")
 const userService =new UserService()
 
 
@@ -12,7 +12,7 @@ const create = async (req,res)=>{
             password:req.body.password
 
         })
-        return res.status(201).json({
+        return res.status(httpStatusCodes.CREATED).json({
             data:user,
             message:"successfully create a user ",
             success:true,
@@ -59,8 +59,36 @@ const destroy = async (req,res)=>{
 
 }
 
+const getById = async (req,res)=>{
+ 
+    try {
+       const user= await userService.getById(
+        { userId:req.params.id}
+
+        )
+        return res.status(httpStatusCodes.OK).json({
+            data:user,
+            message:"successfully fetched the  user ",
+            success:true,
+            err:{}
+        })
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message:"something went wrong with the controller",
+            data:{},
+            success:false,
+            err:error
+        })
+        
+    }
+
+}
+
 
 module.exports={
     create,
-    destroy
+    destroy,
+    getById
 }

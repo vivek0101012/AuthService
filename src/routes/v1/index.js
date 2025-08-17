@@ -7,5 +7,5 @@ const UserController=require("../../controllers/user-controller");
 
 router.post("/users",UserController.create);
 router.delete("/users/:id",UserController.destroy)
-
+router.get("/users/:id",UserController.getById)
 module.exports=router;

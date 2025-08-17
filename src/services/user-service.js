@@ -28,7 +28,18 @@ class UserService{
     }
   }
 
-  
+   async getById (userId){
+    try {
+      const user=  await this.UserRepository.getById(userId);
+        return user;
+        
+    } catch (error) {
+        console.log("something went wrong at  service layer")
+        throw error
+    
+    }
+  }
+
 
 
 
