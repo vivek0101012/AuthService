@@ -32,7 +32,7 @@ class UserRepository {
     }
 
 
-     async getById({userId}){
+     async getById(userId){
         try {
             console.log(userId)
             const user= await User.findByPk(userId,{

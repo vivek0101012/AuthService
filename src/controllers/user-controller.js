@@ -63,7 +63,7 @@ const getById = async (req,res)=>{
  
     try {
        const user= await userService.getById(
-        { userId:req.params.id}
+        req.params.id
 
         )
         return res.status(httpStatusCodes.OK).json({
