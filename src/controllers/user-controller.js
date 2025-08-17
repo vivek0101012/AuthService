@@ -107,6 +107,32 @@ const signIn =async (req,res)=>{
             err:error
         })
         
+
+      
+    }
+}
+
+
+const isAuthenticated=async (req,res)=>{
+    try {
+        const token=req.headers['x-acess-token'];
+        const response= await userService.isAuthenticated(token)
+        console.log(response)
+        return  res.status(httpStatusCodes.OK).json({
+            success:true,
+            data:response,
+            message:"Successfully recieved a valid token",
+            err:{}
+        })
+
+    } catch (error) {
+         return  res.status(httpStatusCodes.UNAUTHORIZED).json({
+            success:false,
+            data:{},
+            message:"failed verfication",
+            err:error
+        })
+        
         
       
     }
@@ -118,5 +144,6 @@ module.exports={
     create,
     destroy,
     getById,
-    signIn
+    signIn,
+    isAuthenticated
 }

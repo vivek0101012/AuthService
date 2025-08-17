@@ -1,8 +1,7 @@
-const { Model } = require("sequelize");
 const jwt =require("jsonwebtoken")
 const UserRepository= require("../repository/user-repository")
 const {JWT_KEY}=require("../config/ServerConfig")
-const bcrypt =require("bcrypt")
+const bcrypt =require("bcrypt");
 class UserService{
   constructor(){
     this.UserRepository=new UserRepository ()
@@ -56,7 +55,7 @@ class UserService{
 
   }
 
-#verifyToken(token){
+verifyToken(token){
     try {
       const response =jwt.verify(token,JWT_KEY);
       return response
@@ -98,6 +97,25 @@ async signIn(email,plainPassword){
     
   } catch (error) {
     console.log("something went wrong with the sign in process",error)
+    throw error
+    
+  }
+}
+
+async isAuthenticated(token){
+  try {
+
+    console.log(token)
+    const response=this.verifyToken(token)
+    const user=await this.UserRepository.getById(response.id)
+    if(!user){
+      throw {error:" no user exist"}
+    }
+    return user.id
+    
+    
+  } catch (error) {
+    console.log("something went wrong with isauthenticated token")
     throw error
     
   }
