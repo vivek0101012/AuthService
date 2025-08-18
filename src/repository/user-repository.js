@@ -1,7 +1,7 @@
 const { where } = require("sequelize");
 const {User,Role}=require("../models/index");
 const { compareSync } = require("bcrypt");
-
+const ValidationError=require("../utils/validation-error")
 class UserRepository {
 
     async create(data){
@@ -10,6 +10,14 @@ class UserRepository {
             return user;
             
         } catch (error) {
+      
+            if(error.name=="SequelizeValidationError"){
+                let validationError= new ValidationError(error);
+                console.log(validationError)
+                throw validationError
+                            // console.log("creating a validation error")
+
+            }
             console.log("something went wrong on repository layer")
             throw error
         }
@@ -78,7 +86,7 @@ class UserRepository {
           
             return user.hasRole(adminRole);
 
-        } catch (error) {
+        } catch (errors) {
             console.log("something went wrong with the isAdmin at repo layer")
             throw error
         }
