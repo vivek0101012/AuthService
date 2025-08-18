@@ -121,6 +121,16 @@ async isAuthenticated(token){
   }
 }
 
+async isAdmin(userId){
+  try {
+    return await this.UserRepository.isAdmin(userId);
+  } catch (error) {
+    console.log("Something went wrong with service layer")
+    throw error
+    
+  }
+}
+
 
 
 }

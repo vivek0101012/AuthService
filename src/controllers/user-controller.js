@@ -21,7 +21,7 @@ const create = async (req,res)=>{
         
     } catch (error) {
         console.log(error);
-        return res.status(500).json({
+        return res.status(httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             message:"something went wrong with the controller",
             data:{},
             success:false,
@@ -39,7 +39,7 @@ const destroy = async (req,res)=>{
          userId:req.body.id
 
         })
-        return res.status(201).json({
+        return res.status(httpStatusCodes.OK).json({
             data:true,
             message:"successfully deleted the  user ",
             success:true,
@@ -138,6 +138,28 @@ const isAuthenticated=async (req,res)=>{
     }
 }
 
+const isAdmin=async (req,res)=>{
+    
+    try {
+        const response=await userService.isAdmin(req.body.userId);
+    return res.status(200).json({
+        data:response,
+        success:true,
+        message:"successfully fetched the user status",
+        err:{}
+    })
+        
+    } catch (error) {
+    return res.status(200).json({
+        data:{},
+        success:false,
+        message:"failed to fetch the user status",
+        err:error
+    })
+        
+    }
+
+}
 
 
 module.exports={
@@ -145,5 +167,6 @@ module.exports={
     destroy,
     getById,
     signIn,
-    isAuthenticated
+    isAuthenticated,
+    isAdmin
 }
